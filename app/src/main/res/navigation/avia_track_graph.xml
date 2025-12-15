@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/avia_track_graph"
+    app:startDestination="@id/aviaTrackLoadFragment">
+
+    <fragment
+        android:id="@+id/aviaTrackLoadFragment"
+        android:name="com.aviatrac.softoclub.trgjo.presentation.ui.load.AviaTrackLoadFragment"
+        android:label="AviaTrackLoadFragment" >
+        <action
+            android:id="@+id/action_aviaTrackLoadFragment_to_aviaTrackV"
+            app:destination="@id/aviaTrackV"
+            app:popUpTo="@id/avia_track_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/aviaTrackV"
+        android:name="com.aviatrac.softoclub.trgjo.presentation.ui.view.AviaTrackV"
+        android:label="AviaTrackV" />
+</navigation>

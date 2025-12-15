@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "189349652628",
+    "project_id": "aviatrack-2d3bd",
+    "storage_bucket": "aviatrack-2d3bd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:189349652628:android:a1805c8018052f6440ec81",
+        "android_client_info": {
+          "package_name": "com.aviatrac.softoclub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCj5hSuiPVMI7G2PhJTfD2yT_EI-HDcd_k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
