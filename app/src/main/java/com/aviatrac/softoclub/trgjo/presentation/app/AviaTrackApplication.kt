@@ -12,7 +12,6 @@ import com.appsflyer.deeplink.DeepLinkResult
 import com.aviatrac.softoclub.trgjo.presentation.di.aviaTrackModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -54,7 +53,6 @@ private const val AVIA_TRACK_LIN = "com.aviatrac.softoclub"
 class AviaTrackApplication : Application() {
 
     private var aviaTrackIsResumed = false
-    private var aviaTrackConversionTimeoutJob: Job? = null
     private var aviaTrackDeepLinkData: MutableMap<String, Any>? = null
 
     override fun onCreate() {
@@ -90,7 +88,6 @@ class AviaTrackApplication : Application() {
             AVIA_TRACK_APP_DEV,
             object : AppsFlyerConversionListener {
                 override fun onConversionDataSuccess(p0: MutableMap<String, Any>?) {
-                    aviaTrackConversionTimeoutJob?.cancel()
                     Log.d(AVIA_TRACK_MAIN_TAG, "onConversionDataSuccess: $p0")
 
                     val afStatus = p0?.get("af_status")?.toString() ?: "null"
@@ -127,7 +124,6 @@ class AviaTrackApplication : Application() {
                 }
 
                 override fun onConversionDataFail(p0: String?) {
-                    aviaTrackConversionTimeoutJob?.cancel()
                     Log.d(AVIA_TRACK_MAIN_TAG, "onConversionDataFail: $p0")
                     aviaTrackResume(AviaTrackAppsFlyerState.AviaTrackError)
                 }
@@ -153,7 +149,6 @@ class AviaTrackApplication : Application() {
                 Log.d(AVIA_TRACK_MAIN_TAG, "AppsFlyer start error: $p0 - $p1")
             }
         })
-        aviaTrackStartConversionTimeout()
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@AviaTrackApplication)
@@ -192,18 +187,7 @@ class AviaTrackApplication : Application() {
         aviaTrackDeepLinkData = map
     }
 
-    private fun aviaTrackStartConversionTimeout() {
-        aviaTrackConversionTimeoutJob = CoroutineScope(Dispatchers.Main).launch {
-            delay(30000)
-            if (!aviaTrackIsResumed) {
-                Log.d(AVIA_TRACK_MAIN_TAG, "TIMEOUT: No conversion data received in 30s")
-                aviaTrackResume(AviaTrackAppsFlyerState.AviaTrackError)
-            }
-        }
-    }
-
     private fun aviaTrackResume(state: AviaTrackAppsFlyerState) {
-        aviaTrackConversionTimeoutJob?.cancel()
         if (state is AviaTrackAppsFlyerState.AviaTrackSuccess) {
             val convData = state.aviaTrackData ?: mutableMapOf()
             val deepData = aviaTrackDeepLinkData ?: mutableMapOf()

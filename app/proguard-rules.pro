@@ -25,6 +25,9 @@
 -keep class com.appsflyer.internal.** { *; }
 -dontwarn com.appsflyer.**
 
+#
+#-keep public class com.miui.referrer.** {*;}
+
 -keep class com.android.installreferrer.** { *; }
 -dontwarn com.android.installreferrer.**
 
